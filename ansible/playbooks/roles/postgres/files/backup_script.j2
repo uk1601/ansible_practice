@@ -1,0 +1,8 @@
+#!/bin/bash
+export PGPASSFILE={{postgres_data_dir}}/.pgpass
+#backup
+date_now=$(date "+%F")
+DAYS_TO_KEEP=90
+BACKUP_DIR={{postgres_backup_dir}}
+pg_dump -U {{postgres_backup_user}} -d {{postgres_db}} | gzip > $BACKUP_DIR/$date_now-daily.sql.gz
+find $BACKUP_DIR -maxdepth 1 -mtime +$DAYS_TO_KEEP -name "*-daily.sql.gz" -exec rm -rf '{}' ';'

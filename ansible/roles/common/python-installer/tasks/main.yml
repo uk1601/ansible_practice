@@ -1,0 +1,6 @@
+---
+- name: Bootstrap a host without python2 installed - Ubuntu 
+  raw: if [ -e /usr/bin/yum ]; then   sudo yum install -y python ; elif [ -e /usr/bin/apt ]; then   sudo apt install -y python ; else    echo "Weird OS"; fi
+
+
+

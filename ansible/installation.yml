@@ -1,0 +1,58 @@
+---
+
+- hosts: es1
+  name: "Installing ELK on RHEL"
+  become: yes
+  become_user: root
+  vars_files:
+     - defaults/main.yml
+  vars:
+    - node_name: es1
+  roles:
+    - {role: java}
+    - {role: elasticsearch}
+- hosts: es2
+  name: "Installing ELK on RHEL"
+  become: yes
+  become_user: root
+  vars_files:
+     - defaults/main.yml
+  vars:
+    - node_name: es2
+  roles:
+    - {role: java}
+    - {role: elasticsearch}
+
+- hosts: es3
+  name: "Installing ELK on RHEL"
+  become: yes
+  become_user: root
+  vars_files:
+     - defaults/main.yml
+  vars:
+    - node_name: es3
+  roles:
+    - {role: java}
+    - {role: elasticsearch}
+
+- hosts: webserver
+  name: "Installing Web Applications"
+  become: yes
+  become_user: root
+  vars_files:
+   - defaults/main.yml
+  roles:
+   - {role: java}
+   - {role: kibana}
+   - {role: logstash}
+#   - {role: certificate}
+#   - {role: web}
+
+- hosts: db
+  name: "Installing Database"
+  become: yes
+  become_user: root
+  vars_files:
+   - defaults/main.yml
+  roles:
+   - {role: postgres}

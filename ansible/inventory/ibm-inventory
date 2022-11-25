@@ -1,0 +1,6 @@
+es1 ansible_host=10.94.76.249 ansible_user=dctool1
+es2 ansible_host=10.94.76.250 ansible_user=dctool1
+es3 ansible_host=10.94.76.251 ansible_user=dctool1
+webserver ansible_host=10.94.76.253 ansible_user=dctool1
+db ansible_host=10.94.76.252 ansible_user=dctool1
+

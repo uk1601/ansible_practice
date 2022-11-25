@@ -1,0 +1,9 @@
+---
+version: "7.8.1"
+es1_ip: "{{ hostvars['es1'].ansible_host }}"
+es2_ip: "{{ hostvars['es2'].ansible_host }}"
+es3_ip: "{{ hostvars['es3'].ansible_host }}"
+db_ip: "{{ hostvars['db'].ansible_host }}"
+postgres_data_dir: "/var/lib/pgsql/12/data"
+postgres_backup_dir: "/var/lib/pgsql/12/backups"
+monitoring_dashboard: "webserver"

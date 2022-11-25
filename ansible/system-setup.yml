@@ -1,0 +1,15 @@
+---
+- name: Install Python on a newly provisioned machine 
+  gather_facts: no
+  become: true
+  hosts: all
+  roles:
+    - { role: common/python-installer }
+
+#- name: Install & configure SSH on servers
+#  gather_facts: yes
+#  become: true
+#  hosts: all
+#  roles:
+#    - { role: ssh-devops,   tags: ['ssh-user'] }
+#    - { role: sys-manager,  tags: ['ssh-user'] }

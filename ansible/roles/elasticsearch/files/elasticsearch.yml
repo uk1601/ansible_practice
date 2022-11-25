@@ -1,0 +1,24 @@
+network.host: _ens192_
+cluster.name: {{cluster_name}}
+node.name: {{node_name}}
+cluster.initial_master_nodes: {{initial_master_node_1}},{{initial_master_node_2}}
+http.port: 9200
+node.ingest: true
+node.ml: true
+node.master: true
+node.data: true
+discovery.zen.minimum_master_nodes: 2
+discovery.zen.ping.unicast.hosts: ["{{es1_ip}}", "{{es2_ip}}","{{es3_ip}}"]
+#Directory
+path.logs: "/var/log/elasticsearch"
+path.data: "/usr/share/elasticsearch/data"
+path.repo: ["/backup"]
+#Security
+xpack.security.enabled: true
+xpack.security.transport.ssl.enabled: true
+xpack.security.transport.ssl.verification_mode: certificate 
+xpack.security.transport.ssl.keystore.path: /etc/elasticsearch/elastic-certificates.p12 
+xpack.security.transport.ssl.truststore.path: /etc/elasticsearch/elastic-certificates.p12 
+#Monitoring
+# xpack.monitoring.enabled: true
+# xpack.monitoring.collection.enabled: true

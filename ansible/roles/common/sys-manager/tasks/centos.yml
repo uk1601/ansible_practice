@@ -1,0 +1,8 @@
+---
+- name: install unzip net-tools CentOS
+  yum: 
+    list: ['epel-release', 'unzip', 'net-tools', 'vim', 'wget', 'sysstat', 'telnet', 'htop', 'python-pip', 'smem']
+    state: present
+
+
+  

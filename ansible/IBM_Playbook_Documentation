@@ -1,0 +1,111 @@
+Getting Started
+
+
+Requirements:
+
+ansible >= 2.9
+
+Prerequisite:
+
+	1.1. Downloading Elasticsearch 
+	    - https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.8.1-x86_64.rpm
+	    - Rename to "elasticsearch-${version}.rpm"
+	    - Move to roles/elasticsearch/files/elasticsearch-${version}.rpm
+
+    1.2 Downloading Kibana 
+       - https://artifacts.elastic.co/downloads/kibana/kibana-7.8.1-x86_64.rpm 
+       - Rename to "kibana-${version}.rpm"
+       - Move to roles/kibana/files/kibana-${version}.rpm
+
+    1.3 Downloading logstash 
+      - https://artifacts.elastic.co/downloads/logstash/logstash-7.8.1.rpm  
+      - Rename to "logstash-${version}.rpm"
+      - Move to roles/logstash/files/logstash-${version}.rpm
+
+    1.4 Downloading MetricBeat 
+      - https://artifacts.elastic.co/downloads/metricbeat/metricbeat-7.8.1-x86_64.rpm  
+      - Rename to "metricbeat-${version}.rpm"
+      - Move to roles/metricbeat/files/metricbeat-${version}.rpm
+      
+    1.5 Downloading JDK 
+      - rename to "jdk-11.0.8.rpm"
+      - move to roles/java/files
+
+    1.6 Downloading nginx
+      - http://nginx.org/packages/rhel/7/x86_64/RPMS/nginx-1.18.0-1.el7.ngx.x86_64.rpm
+      - Rename to nginx-1.18.rpm
+      - move to roles/web/files
+
+    1.7 Downloading PostgreSQL 
+      - https://yum.postgresql.org/12/redhat/rhel-7-x86_64/postgresql12-12.4-1PGDG.rhel7.x86_64.rpm
+      - https://yum.postgresql.org/12/redhat/rhel-7-x86_64/postgresql12-libs-12.4-1PGDG.rhel7.x86_64.rpm
+      - https://yum.postgresql.org/12/redhat/rhel-7-x86_64/postgresql12-libs-12.4-1PGDG.rhel7.x86_64.rpm
+      - move all downloaded files to roles/postgres/postgres-installer  
+
+    1.8 Creating Ansible Vaults to Store Credentials
+        List of Variables
+      - elastic_password: "secret-string"
+      -	elastic_user: "elastic_admin"  #default
+      -	encryption_key: "secret"
+      -	cluster_name: "Staging-Server"
+      - initial_master_node_1: "es1"
+      - initial_master_node_2: "es2"
+      - node_name: "es1"             #seperate for all the node naming should be like es1,es2,es3
+      -	postgres_user: "secret"
+      -	postgres_user_password: "secret"
+      - postgres_root_password: "secret"
+      -	postgres_root_user: "postgres"  #default
+      -	postgres_backup_user: "backup"
+      - postgres_backup_password: "secret"
+      -	postgres_db: "secret"
+
+Usage:
+
+Use the Playbook for Setting Up the ELK Cluster,Root folder consists of various playbook and each has different functionality so to avoid failure they should be executed in proper order. Order as follows.
+
+1. installation.yml
+As the name suggests by running this playbook it will install Elasticsearch,Kibana and Logstash and all the application on the server. After successfully running this playbook we can move on to next one.
+
+sample of installation.yml
+
+- hosts: all
+  name: "Installing Web Applications"
+  become: yes
+  become_user: root
+  vars_files:
+   - defaults/main.yml
+  roles:
+   - {role: java}
+   - {role: kibana}
+   - {role: logstash}
+In the above example, It is installing Java kibana on logstash on webapplication server.
+
+2. deployment.yml
+After successful completion of previous playbook and check whether you are able to access kibana. Then only proceed with this playbook. As this playbook will help in importing the dashboards.
+
+3. monitoring.yml
+
+As it is depended on ELK Cluster,Verfiy that Kibana is accessible. It will install metricbeat on all servers for monitoring purpose, it will import kibana dashboard to view all the metrics of server and take action if required like, Increasing Disk Space and so on..
+
+Commands:
+ 
+ list of commands:
+ 1. Executing Installation.yml Playbook 
+
+ ansible-playbook -i inventory installation.yml -e @secrets.yml --ask-vault-pass
+
+ 2. Executing deployment.yml Playbook 
+
+ ansible-playbook -i inventory deployment.yml -e @secrets.yml --ask-vault-pass
+
+ 3. Monitoring Installation.yml Playbook 
+
+ ansible-playbook -i inventory monitoring.yml -e @secrets.yml --ask-vault-pass
+
+ 4. Editing Ansible Vault Contents
+
+ ansible-vault edit secrets.yml
+
+ 5. Viewing Contents of Secrets.yml
+
+ ansible-vault view secrets.yml

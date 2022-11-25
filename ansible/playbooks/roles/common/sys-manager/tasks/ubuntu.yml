@@ -1,0 +1,28 @@
+---
+- name: Run the equivalent of "apt-get update" as a separate step
+  apt:
+    update_cache: yes
+    cache_valid_time: 86400
+
+- name: install unzip net-tools for Ubuntu 
+  apt: 
+    list: ['unzip', 'net-tools', 'vim', 'wget', 'sysstat', 'telnet', 'htop', 'python-pip', 'smem']
+    state: present
+
+#Install Clam AV & setup Cronjob for scanning directories
+- name: Install Anti-Virus
+  apt: 
+    name: clamav
+    state: present 
+
+- name: Install Anti-Virus
+  apt: 
+    name: clamav-daemon
+    state: present 
+
+- name: Update ClamAV database 
+  command: sudo freshclam
+
+
+
+
